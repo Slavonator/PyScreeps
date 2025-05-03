@@ -1,23 +1,25 @@
+from resources import Iron
+
 class Tile:
 
     def __init__(
             self, 
             symbol: str,
             walkspeed: int,
-            contains: list=[],
+            contains: list | None=None,
             minable: bool=False
             ):
         
         self.symbol = symbol
         self.walkspeed = walkspeed
-        self.contains = contains
-        self.minable = minable
+        self.contains = contains if contains is not None else []
+        self.mineable = minable
 
     def __repr__(self):
         return self.symbol
     
     def get_minable(self):
-        return self.minable
+        return self.mineable
     
     def get_walkspeed(self):
         return self.walkspeed
@@ -49,8 +51,8 @@ class BasicOre(ObstacleTile):
     def __init__(self):
         super().__init__()
         self.symbol = 'o'
-        self.contains = ['basic ore']
-        self.minable = True
+        self.contains = [Iron]
+        self.mineable = True
 
 
 MAP_TILES_DICT = {
