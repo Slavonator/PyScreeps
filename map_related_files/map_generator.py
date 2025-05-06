@@ -48,7 +48,7 @@ class MapGenerator:
         self.expansion_threshold = expansion_threshold
         self.resource_chances = resource_chances
 
-    def __call__(self):
+    def generate_map(self):
         grid = self._generate_empty_grid()
         grid = self._generate_obstacles(grid)
         grid = self._place_resources(grid)
@@ -73,7 +73,6 @@ class MapGenerator:
 
         for _ in range(self.smooth_steps):
 
-            
             neighbors = sum([
                 np.roll(np.roll(grid, -1, 1), 1, 0),
                 np.roll(np.roll(grid, 1, 1), -1, 0),
@@ -110,14 +109,3 @@ class MapGenerator:
         ])
 
         return (grid & (0 < neighbors) & (neighbors < 8)).astype(int)
-       
-
-
-
-if __name__ == "__main__":
-    with np.printoptions(threshold=np.inf, linewidth=200):
-        # import os
-        # os.system("clear")
-        map = MapGenerator()()
-        f1 = open("output.txt", "w+")
-        f1.write(str(map))

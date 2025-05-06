@@ -3,8 +3,9 @@ class Resource:
             self,
             name: str,
             extractable_by: list | None=None,
-            rarity: float=0
-    ):
+            rarity: float=1
+        ):
+        
         self.name = name
         self.extractable_by = extractable_by if extractable_by is not None else []
         self.rarity = rarity
