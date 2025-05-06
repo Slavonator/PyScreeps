@@ -52,7 +52,7 @@ class MapGenerator:
         grid = self._generate_empty_grid()
         grid = self._generate_obstacles(grid)
         grid = self._place_resources(grid)
-        return grid
+        return grid.tolist()
 
     def _generate_empty_grid(self):
 

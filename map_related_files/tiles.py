@@ -1,31 +1,37 @@
 from .resources import *
+from datetime import timedelta, datetime
 
-# Динамические клетки:
 
 class Tile:
 
-    __slots__ = ("symbol", "walkspeed", "contains", "resource", "destructable")
+    __slots__ = (
+        "symbol",
+        "walkspeed",
+        "contains",
+        "resource",
+        "destructable"
+    )
 
     def __init__(
             self, 
             symbol: str="?",
             walkspeed: int=1,
             contains: list | None=None,
-            resource: None | Resource=None,
+            mineable: bool=False,
             destructable: bool=False
         ):
         
         self.symbol = symbol
         self.walkspeed = walkspeed
         self.contains = contains if contains is not None else []
-        self.resource = resource
+        self.mineable = mineable
         self.destructable = destructable
 
     def __str__(self):
         return self.symbol
     
-    def get_resource(self):
-        return self.resource
+    def get_mineable(self):
+        return self.mineable
     
     def get_walkspeed(self):
         return self.walkspeed
@@ -37,21 +43,39 @@ class Tile:
         return self.destructable
     
     def mine(self):
-        if self.get_resource():
-            ...
+        if self.get_mineable():
+            if self.get_timeout_state():
+                return 'Уже добыто'
+            else:
+                self.timed_out = datetime.now()
         else:
             return 'Нечего добывать'
-
 
 
 class EmptyTile(Tile):
 
     def __init__(self):
-        super().__init__(".", 5)
+        super().__init__(
+            symbol=".",
+            walkspeed=5
+        )
 
+
+class ObstacleTile(Tile):
+
+    def __init__(self):
+        super().__init__(
+            symbol='O',
+            walkspeed=0
+        )
 
 
 class Deposit(Tile):
+
+    __slots__ = (
+        "resource"
+        "timed_out"
+    )
 
     def __init__(self,
         symbol: str='D',
@@ -59,27 +83,24 @@ class Deposit(Tile):
         super().__init__(
             symbol=symbol,
             walkspeed=0,
-            resource=resource
+            mineable=True
         )
+        self.resource = resource
+        self.timed_out = False
+
+    def get_timeout_state(self):
+        if self.timed_out:
+            if datetime.now() - self.timed_out > self.resource.get_timeout():
+                self.timed_out = False
+        return self.timed_out
 
 
 class IronDeposit(Deposit):
 
     def __init__(self):
-        super().__init__('I', Iron)
-
-# Статические клетки
-
-class ObstacleTile(Tile):
-
-    __slots__ = ()
-
-    def __init__(self):
         super().__init__(
-            symbol='O',
-            walkspeed=0,
-            resource=False,
-            destructable=False
+            symbol='I',
+            resource=Iron()
         )
 
 # Константы
@@ -89,6 +110,6 @@ OBSTACLE = ObstacleTile()
 MAP_TILES = (
         EmptyTile(),
         OBSTACLE,
-        Deposit(),
+        IronDeposit(),
         )
 
