@@ -1,6 +1,7 @@
 from .resources import *
 from datetime import timedelta, datetime
 
+# Классы
 
 class Tile:
 
@@ -8,7 +9,7 @@ class Tile:
         "symbol",
         "walkspeed",
         "contains",
-        "resource",
+        "mineable",
         "destructable"
     )
 
@@ -29,6 +30,9 @@ class Tile:
 
     def __str__(self):
         return self.symbol
+    
+    def __repr__(self):
+        return f'{self.__class__.__name__}(symbol={self.symbol})'
     
     def get_mineable(self):
         return self.mineable
@@ -103,13 +107,17 @@ class IronDeposit(Deposit):
             resource=Iron()
         )
 
+# Функции
+
+def convert_map_tile(tile_index: int):
+    if tile_index == 0:
+        return EmptyTile()
+    if tile_index == 1:
+        return OBSTACLE
+    if tile_index == 2:
+        return IronDeposit()
+    return Tile()
+
 # Константы
 
 OBSTACLE = ObstacleTile()
-
-MAP_TILES = (
-        EmptyTile(),
-        OBSTACLE,
-        IronDeposit(),
-        )
-

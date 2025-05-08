@@ -3,7 +3,7 @@ from datetime import timedelta
 class Resource:
     def __init__(
             self,
-            name: str,
+            name: str='?',
             extractable_by: list | None=None,
             rarity: float=1,
             timeout: timedelta=timedelta(seconds=10)
@@ -24,6 +24,6 @@ class Iron(Resource):
         super().__init__(
             "железо",
             ["all"],
-            0.5,
+            1,
             timeout=timedelta(seconds=30)
         )

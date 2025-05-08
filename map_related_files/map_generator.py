@@ -1,4 +1,5 @@
 import numpy as np
+from .tiles import *
 
 SIZE = 64  # Размер генерируемой карты
 OBSTACLE_POINTS = 32  # Количество препятствий
@@ -52,7 +53,7 @@ class MapGenerator:
         grid = self._generate_empty_grid()
         grid = self._generate_obstacles(grid)
         grid = self._place_resources(grid)
-        return grid.tolist()
+        return self.convert_array_to_game_map(grid)
 
     def _generate_empty_grid(self):
 
@@ -94,6 +95,13 @@ class MapGenerator:
         grid[resources] = 2
         return grid
 
+    def convert_array_to_game_map(self, array: np.ndarray):
+        game_map = array.tolist()
+        for x in range(self.size):
+            for y in range(self.size):
+                game_map[x][y] = convert_map_tile(game_map[x][y])
+        return game_map
+
     @staticmethod
     def _get_contur(grid):
 
@@ -109,3 +117,4 @@ class MapGenerator:
         ])
 
         return (grid & (0 < neighbors) & (neighbors < 8)).astype(int)
+    
