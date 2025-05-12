@@ -1,4 +1,8 @@
-from .resources import *
+if __package__:
+    from .resources import *
+else:
+    from resources import *
+
 from datetime import timedelta, datetime
 
 # Классы

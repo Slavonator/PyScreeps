@@ -1,5 +1,6 @@
 __all__ = (
     'map_generator',
     'resources',
-    'tiles'
+    'tiles',
+    'game_map'
 )

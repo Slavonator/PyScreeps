@@ -1,5 +1,8 @@
 import numpy as np
-from .tiles import *
+if __package__:
+    from .tiles import *
+else:
+    from tiles import *
 
 SIZE = 64  # Размер генерируемой карты
 OBSTACLE_POINTS = 32  # Количество препятствий
@@ -54,6 +57,9 @@ class MapGenerator:
         grid = self._generate_obstacles(grid)
         grid = self._place_resources(grid)
         return self.convert_array_to_game_map(grid)
+    
+    def make_clear_map(self):
+        return self.convert_array_to_game_map(np.zeros((64, 64), dtype=int))
 
     def _generate_empty_grid(self):
 
