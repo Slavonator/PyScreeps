@@ -1,8 +1,10 @@
 import numpy as np
 if __package__:
     from .tiles import *
+    from .game_map import *
 else:
     from tiles import *
+    from game_map import *
 
 SIZE = 64  # Размер генерируемой карты
 OBSTACLE_POINTS = 32  # Количество препятствий
@@ -59,11 +61,11 @@ class MapGenerator:
         return self.convert_array_to_game_map(grid)
     
     def make_clear_map(self):
-        return self.convert_array_to_game_map(np.zeros((64, 64), dtype=int))
+        return self.convert_array_to_game_map(np.zeros((64, 64), dtype=np.int8))
 
     def _generate_empty_grid(self):
 
-        grid = np.zeros((self.size, self.size), dtype=int)
+        grid = np.zeros((self.size, self.size), dtype=np.int8)
 
         return grid
 
@@ -91,7 +93,7 @@ class MapGenerator:
                 np.roll(grid, -1, 0)
                 ])
 
-            grid = ((neighbors >= self.preservation_threshold) | (grid & neighbors >= self.expansion_threshold)).astype(int)
+            grid = ((neighbors >= self.preservation_threshold) | (grid & neighbors >= self.expansion_threshold)).astype(np.int8)
 
         return grid
 
@@ -122,5 +124,5 @@ class MapGenerator:
             np.roll(grid, -1, 0)
         ])
 
-        return (grid & (0 < neighbors) & (neighbors < 8)).astype(int)
+        return (grid & (0 < neighbors) & (neighbors < 8)).astype(np.int8)
     

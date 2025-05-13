@@ -1,11 +1,29 @@
 from map_related_files import *
-import numpy as np
+from textual.app import App
+from textual.widgets import Header, Footer, Static
 
 GENERATOR = map_generator.MapGenerator()
+GLOBAL_MAP = game_map.GameMap()
 
-def show_map(map):
+class TestLocalMapWidget(Static):
 
-    for row in map:
-        for tile in row:
-            print(tile, end='')
-        print()
+    def on_mount(self):
+        self.generate_map()
+
+    def on_click(self):
+        self.generate_map()
+
+    def generate_map(self):
+        self.update(GENERATOR.generate_map())
+
+
+class Interface(App):
+
+    def compose(self):
+        yield Header()
+        yield TestLocalMapWidget()
+        yield Footer()
+
+
+if __name__ == '__main__':
+    Interface().run()
