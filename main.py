@@ -49,9 +49,11 @@ class MapWidget(Static, can_focus=True):
 
 class Interface(App):
 
+    CSS_PATH = "styles.tcss"
+
     def compose(self):
         yield Header()
-        yield MapWidget()
+        yield MapWidget(id='map')
         yield Footer()
 
 if __name__ == '__main__':

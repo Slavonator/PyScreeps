@@ -1,0 +1,12 @@
+Screen {
+    layout: grid;
+    grid-size: 2 2;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+#map {
+    row-span: 2;
+    height: 100%;
+    border: solid;
+}
+
