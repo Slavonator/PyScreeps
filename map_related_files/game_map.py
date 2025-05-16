@@ -73,8 +73,8 @@ class GameMap:
                 self.min_x -= 1
 
     def get_sector(self, x, y):
-        return self.game_map[self.max_y - y][x - self.min_x]
-
+        if self.min_x <= x <= self.max_x and self.min_y <= y <= self.max_y:
+            return self.game_map[self.max_y - y][x - self.min_x]
     
     @property
     def game_map_width(self):
