@@ -58,10 +58,10 @@ class MapGenerator:
         grid = self._generate_empty_grid()
         grid = self._generate_obstacles(grid)
         grid = self._place_resources(grid)
-        return self.convert_array_to_game_map(grid)
+        return self._convert_array_to_game_map(grid)
     
     def make_clear_map(self):
-        return self.convert_array_to_game_map(np.zeros((64, 64), dtype=np.int8))
+        return self._convert_array_to_game_map(np.zeros((64, 64), dtype=np.int8))
 
     def _generate_empty_grid(self):
 
@@ -103,7 +103,7 @@ class MapGenerator:
         grid[resources] = 2
         return grid
 
-    def convert_array_to_game_map(self, array: np.ndarray):
+    def _convert_array_to_game_map(self, array: np.ndarray):
         game_map = array.tolist()
         for x in range(self.size):
             for y in range(self.size):

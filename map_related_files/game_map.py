@@ -25,7 +25,7 @@ class Sector:
         string_sector_map = ''
         for row in self.sector_map:
             for tile in row:
-                string_sector_map += tile
+                string_sector_map += str(tile)
             string_sector_map += '\n'
         return string_sector_map
 
@@ -53,8 +53,6 @@ class GameMap:
             self.expand_map('s')
         while self.max_y < sector_y:
             self.expand_map('n')
-        if self.game_map[self.max_y - sector_y][sector_x - self.min_x] is not None:
-            raise ValueError('This position is already occupied')
         self.game_map[self.max_y - sector_y][sector_x - self.min_x] = sector
     
     def expand_map(self, direction):
@@ -73,6 +71,10 @@ class GameMap:
                 for row in range(self.game_map_height):
                     self.game_map[row].insert(0, None)
                 self.min_x -= 1
+
+    def get_sector(self, x, y):
+        return self.game_map[self.max_y - y][x - self.min_x]
+
     
     @property
     def game_map_width(self):
@@ -82,18 +84,3 @@ class GameMap:
     def game_map_height(self):
         return self.max_y - self.min_y + 1
     
-
-if __name__ == '__main__':
-
-    def show_map():
-        for row in game_map:
-            print(row)
-        print('===')
-
-    from map_generator import MapGenerator
-    MAP_GENERATOR = MapGenerator()
-    game_map = GameMap()
-    for x in range(-3, 4):
-        for y in range(-3, 4):
-            game_map.add_sector(Sector([], (x, y)))
-    show_map()
