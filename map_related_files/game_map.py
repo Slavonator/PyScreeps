@@ -18,6 +18,9 @@ class Sector:
     def get_position(self) -> tuple:
         return (self.x, self.y)
     
+    def get_tile(self, x: int, y: int) -> Tile:
+        return self.sector_map[y][x]
+    
     def __repr__(self) -> str:
         return(f'Sector({self.x}, {self.y})')
     
@@ -28,6 +31,10 @@ class Sector:
                 string_sector_map += str(tile)
             string_sector_map += '\n'
         return string_sector_map
+    
+    def place_agent(self, agent):
+        x, y = agent.get_position()
+        self.sector_map[x][y].add_contains(agent)
 
 
 class GameMap:

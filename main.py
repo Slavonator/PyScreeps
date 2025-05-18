@@ -1,4 +1,5 @@
 from map_related_files import *
+from agents import *
 from textual.app import App
 from textual.widgets import Header, Footer, Static
 
@@ -13,13 +14,13 @@ class MapWidget(Static, can_focus=True):
     
     def on_key(self, event):
         try:
-            if event.key == 'up':
+            if event.key == 'ctrl+up':
                 self.move_current_section('n')
-            if event.key == 'down':
+            if event.key == 'ctrl+down':
                 self.move_current_section('s')
-            if event.key == 'left':
+            if event.key == 'ctrl+left':
                 self.move_current_section('e')
-            if event.key == 'right':
+            if event.key == 'ctrl+right':
                 self.move_current_section('w')
         except IndexError:
             self.update(f'{GLOBAL_MAP.max_y, GLOBAL_MAP.min_y}')
@@ -42,7 +43,10 @@ class MapWidget(Static, can_focus=True):
     def display_current_section(self):
         sector = GLOBAL_MAP.get_sector(*self.current_section)
         if sector is None:
+            # sector = game_map.Sector(GENERATOR.make_clear_map(), self.current_section)
             sector = game_map.Sector(GENERATOR.generate_map(), self.current_section)
+            # agent = Agent(sector, (32, 32))
+            # sector.place_agent(agent)
             GLOBAL_MAP.add_sector(sector)
         self.update(str(sector))
 
@@ -53,7 +57,7 @@ class Interface(App):
 
     def compose(self):
         yield Header()
-        yield MapWidget(id='map')
+        yield MapWidget()
         yield Footer()
 
 if __name__ == '__main__':

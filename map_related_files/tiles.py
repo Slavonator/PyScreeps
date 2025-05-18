@@ -33,10 +33,21 @@ class Tile:
         self.destructable = destructable
 
     def __str__(self):
-        return self.symbol
+        symbol = self.symbol
+        for object in self.contains:
+            symbol = object.get_symbol()
+        return symbol
     
     def __repr__(self):
         return f'{self.__class__.__name__}(symbol="{self.symbol}")'
+    
+    def add_contains(self, *objects):
+        for object in objects:
+            self.contains.append(object)
+
+    def remove_contains(self, *objects):
+        for object in objects:
+            self.contains.remove(object)
     
     def get_mineable(self):
         return self.mineable
@@ -53,11 +64,11 @@ class Tile:
     def mine(self):
         if self.get_mineable():
             if self.get_timeout_state():
-                return 'Уже добыто'
+                return False
             else:
                 self.timed_out = datetime.now()
         else:
-            return 'Нечего добывать'
+            return False
 
 
 class EmptyTile(Tile):
