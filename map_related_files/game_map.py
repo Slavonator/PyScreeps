@@ -1,3 +1,4 @@
+import numpy as np
 if __package__:
     from .tiles import *
 else:
@@ -34,7 +35,7 @@ class Sector:
     
     def place_agent(self, agent):
         x, y = agent.get_position()
-        self.sector_map[x][y].add_contains(agent)
+        self.sector_map[y][x].add_contains(agent)
 
 
 class GameMap:
@@ -91,3 +92,18 @@ class GameMap:
     def game_map_height(self):
         return self.max_y - self.min_y + 1
     
+
+def find_valid_position(sector_map, size=64):
+    attempts = 0
+    while attempts < 100:
+        x = np.random.randint(0, size)
+        y = np.random.randint(0, size)
+        tile = sector_map[y][x]
+        if tile.walkspeed > 0:
+            for dx, dy in [(-1,0), (1,0), (0,-1), (0,1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < size and 0 <= ny < size:
+                    if sector_map[ny][nx].walkspeed > 0:
+                        return (x, y)
+            attempts += 1
+    return (size//2, size//2)

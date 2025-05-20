@@ -43,13 +43,12 @@ class MapWidget(Static, can_focus=True):
     def display_current_section(self):
         sector = GLOBAL_MAP.get_sector(*self.current_section)
         if sector is None:
-            # sector = game_map.Sector(GENERATOR.make_clear_map(), self.current_section)
             sector = game_map.Sector(GENERATOR.generate_map(), self.current_section)
-            # agent = Agent(sector, (32, 32))
-            # sector.place_agent(agent)
+            position = game_map.find_valid_position(sector.sector_map)
+            agent = Agent(sector, position)
+            sector.place_agent(agent)
             GLOBAL_MAP.add_sector(sector)
         self.update(str(sector))
-
 
 class Interface(App):
 
